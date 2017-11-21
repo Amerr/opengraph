@@ -19,15 +19,36 @@ module OpenGraph
     doc = Nokogiri::HTML.parse(html)
     page = OpenGraph::Object.new
     doc.css('meta').each do |m|
-      if m.attribute('property') && m.attribute('property').to_s.match(/^og:(.+)$/i)
-        page[$1.gsub('-','_')] = m.attribute('content').to_s
+      if m.attribute('property')
+        property = m.attribute('property').to_s
+        content = m.attribute('content').to_s
+        tag = m.attribute('content').to_s
+        if property.match(/^og:(.+)$/i)
+          page[$1.gsub('-','_')] = content
+        elsif property.match(/^article:(.+)$/i)
+          categorize(page, 'article',$1.gsub('-','_'), content)
+        elsif property.match(/^book:(.+)$/i)
+          categorize(page, 'book',$1.gsub('-','_'), content)
+        elsif property.match(/^video:(.+)$/i)
+          categorize(page, 'video',$1.gsub('-','_'), content)
+        end
       end
     end
     return false if page.keys.empty?
     return false unless page.valid? if strict
     page
   end
-  
+
+  def self.categorize(page, type, key, content)
+    page[type] = {} if page[type].nil?
+    if page[type][key].nil?
+      page[type][key] = content
+    else
+      page[type][key] = [] unless page[type][key].kind_of?(Array)
+      page[type][key] << content
+    end
+  end
+
   TYPES = {
     'activity' => %w(activity sport),
     'business' => %w(bar company cafe hotel restaurant),
