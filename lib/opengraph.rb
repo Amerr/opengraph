@@ -1,6 +1,7 @@
 require 'hashie'
 require 'nokogiri'
 require 'restclient'
+require 'watir'
 
 module OpenGraph
   # Fetch Open Graph data from the specified URI. Makes an
@@ -10,11 +11,15 @@ module OpenGraph
   # Pass <tt>false</tt> for the second argument if you want to
   # see invalid (i.e. missing a required attribute) data.
   def self.fetch(uri, strict = true)
-    parse(RestClient.get(uri).body, strict)
+    browser = Watir::Browser.new :chrome
+    browser.goto uri
+    browser.wait_until(1) {
+      parse(browser.html, strict)
+    }
   rescue RestClient::Exception, SocketError
     false
   end
-  
+
   def self.parse(html, strict = true)
     doc = Nokogiri::HTML.parse(html)
     page = OpenGraph::Object.new

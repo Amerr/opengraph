@@ -50,11 +50,13 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<hashie>, [">= 0"])
       s.add_runtime_dependency(%q<nokogiri>, ["~> 1.6.0"])
       s.add_runtime_dependency(%q<rest-client>, ["~> 1.6.0"])
+      s.add_runtime_dependency(%q<watir>)
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_development_dependency(%q<webmock>, [">= 0"])
     else
       s.add_dependency(%q<hashie>, [">= 0"])
       s.add_dependency(%q<nokogiri>, ["~> 1.6.0"])
+      s.add_dependency(%q<watir>)
       s.add_dependency(%q<rest-client>, ["~> 1.6.0"])
       s.add_dependency(%q<rspec>, [">= 2.0.0"])
       s.add_dependency(%q<webmock>, [">= 0"])
@@ -63,6 +65,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<hashie>, [">= 0"])
     s.add_dependency(%q<nokogiri>, ["~> 1.6.0"])
     s.add_dependency(%q<rest-client>, ["~> 1.6.0"])
+    s.add_dependency(%q<watir>)
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<webmock>, [">= 0"])
   end
